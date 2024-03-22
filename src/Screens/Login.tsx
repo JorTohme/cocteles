@@ -1,15 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import { View, Image, Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { useState } from 'react';
+import { Colors } from '../Utils/Colors';
+import { Mock } from '../Utils/LoginMock';
+import { useNavigation } from '@react-navigation/native';
 
-const EyeOpen = require('../assets/Shown.png')
-const EyeClosed = require('../assets/Hidden.png')
+const EyeOpen = require('../../assets/Shown.png')
+const EyeClosed = require('../../assets/Hidden.png')
 
-const colors = {
-  background: '#222222',
-  primaryYellow: '#FFDE59',
-}
+
 export default function Login() {
   const [loginData, setLoginData] = useState(false)
   const [viewPassword, setViewPassword] = useState(false)
@@ -19,12 +18,21 @@ export default function Login() {
     password: ''
   })
 
+  const navigation = useNavigation()
+
+  const handleLogin = () => {
+    if (userData.email === Mock.email && userData.password === Mock.password) {
+      navigation.navigate('Home')
+    } else {
+      console.log('Login failed')
+    }
+  }
+
   if (loginData) return (
     <>
-      <StatusBar style="light" />
       <Container style={{justifyContent: 'space-between'}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={{marginTop: 100, alignItems: 'center'}}>
-          <Logo source={require('../assets/Cocteles.png')} style={{width: 100, height: 100}} />
+          <Logo source={require('../../assets/Cocteles.png')} style={{width: 100, height: 100}} />
           <Label style={{fontSize: 20, marginBottom: 20}}> Ingresa tus datos </Label>
         </View>
 
@@ -50,7 +58,7 @@ export default function Login() {
           <Label style={{textAlign: 'center'}}>Olvidé mi contraseña</Label>
         </DataContainer>
 
-        <Button onPress={() => setLoginData(false)} activeOpacity={0.5}>
+        <Button onPress={() => handleLogin()} activeOpacity={0.5}>
           <ButtonText>Iniciar sesión</ButtonText>
         </Button>
       </Container>
@@ -59,9 +67,8 @@ export default function Login() {
 
   return (
     <>
-      <StatusBar style="light" />
       <Container>
-        <Logo source={require('../assets/Cocteles.png')} style={{width: 230, height: 230}} />
+        <Logo source={require('../../assets/Cocteles.png')} style={{width: 230, height: 230}} />
         <Button onPress={() => setLoginData(true)} activeOpacity={0.5}>
           <ButtonText>Iniciar sesión</ButtonText>
         </Button>
@@ -72,14 +79,14 @@ export default function Login() {
 
 const Container = styled.KeyboardAvoidingView`
   flex: 1;
-  background-color: ${colors.background};
+  background-color: ${Colors.background};
   align-items: center;
   justify-content: center;
   padding: 30px;
 `;
 
 const Button = styled.TouchableOpacity`
-  background-color: ${colors.primaryYellow};
+  background-color: ${Colors.primaryYellow};
   padding: 0px 10px;
   border-radius: 5px;
   margin-bottom: 60px;
@@ -91,7 +98,7 @@ const Button = styled.TouchableOpacity`
 `;
 
 const ButtonText = styled.Text`
-  color: ${colors.background};
+  color: ${Colors.background};
   font-size: 16px;
 `;
 
